@@ -3,6 +3,7 @@ package com.maxescobar.basededatos;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
@@ -60,5 +61,43 @@ public class MainActivity extends AppCompatActivity {
             //Avisar al usuario de este caso
             Toast.makeText(this,"Debes completar todos los campos", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    //Metodo para la consulta de un articulo
+    public void Buscar(View vista){
+        //Como arriba utilizamos el objeto que hemos creado con el fin de utilizar los metodos de la base de datos de SQLiteOpenHelper
+        AdminiSQLite admin = new AdminiSQLite(this,"administracion",null,1);
+        //Vamos traemos como objeto SQLiteDatabase para que podamos trabajar con sus metodos para facilitarnos la vida
+        SQLiteDatabase basededatos = admin.getWritableDatabase();
+        //extraemos el codigo que vamos a buscar
+        String codigo = etCodigo.getText().toString();
+
+        if (!codigo.isEmpty()) {
+            //Con la bvariable Cursor fingimos ser una operacion DDL de base de datos que nos permite utilizar la sentencia SELECT en la base de datos
+            Cursor fila = basededatos.rawQuery
+                    ("SELECT descripcion, precio FROM articulo WHERE codigo =" + codigo, null);
+            //Si lo encuentra entonces... moveToFirst() disparar un true
+            if (fila.moveToFirst()){
+                //Bueno como se base de datos no importa pero si me golpeo la cabeza...
+                //Es un select... este nos va a traer 3 columnas segun como lo hayamos pedido en el sql pedimos primero 'SELECT descripcion, precio'
+                //entonces como en Java este nos va a traer una tabla resulSet en ese mapeo de resultados en el primero estara la descripcion y en el segundo el precio
+                etNombre.setText(fila.getString(0));
+                etPrecio.setText(fila.getString(1));
+
+                //Cerrar la base de datos
+                basededatos.close();
+                //Mensaje de que encontro el resultado de la busqueda
+                Toast.makeText(this,"Se encontro el articulo",Toast.LENGTH_SHORT).show();
+            }else{
+                //Mensaje de que no encontro ni nada
+                Toast.makeText(this,"No se ha encontrado un articulo que responde a ese codigo", Toast.LENGTH_SHORT).show();
+                //Cerramos la base de datos
+                basededatos.close();
+            }
+        }else{
+            //si no esta compleo el codigo... pues que lo coloque
+            Toast.makeText(this,"Debes escribir un codigo que desee buscar", Toast.LENGTH_SHORT).show();
+        }
+
     }
 }
