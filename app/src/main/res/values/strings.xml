@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">basededatos</string>
+    <string name="title">Registrador de articulos</string>
+    <string name="code">Código del Producto</string>
+    <string name="price">Precio del Producto</string>
+    <string name="data">Descripción del Producto</string>
+    <string name="BtnRegister">Registrar Producto</string>
+    <string name="BtnSearch">Buscar Producto</string>
+    <string name="BtnDelete">Eliminar Producto</string>
+    <string name="BtnEdit">Modificar Producto</string>
+</resources>
