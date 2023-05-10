@@ -15,7 +15,7 @@ public class AdminiSQLite extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase basedeDatos) {
-        basedeDatos.execSQL("CREATE TABLE articulos(codigo int PRIMARY KEY, decripcion text, precio real)");
+        basedeDatos.execSQL("CREATE TABLE articulos(codigo int PRIMARY KEY, descripcion text, precio real)");
     }
 
     @Override
